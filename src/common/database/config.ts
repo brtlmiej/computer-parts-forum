@@ -9,6 +9,6 @@ export function databaseConfig(): TypeOrmModuleOptions {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: true,
-    entities: []
+    entities: ['dist/**/*.entity{.ts,.js}']
   }
 }

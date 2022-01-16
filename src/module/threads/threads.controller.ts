@@ -8,7 +8,11 @@ export class ThreadsController {
   @Get()
   @Render('threads/index')
   async index() {
-    const threads = await this.threadsRepository.findAll(20);
+    const threads = await this.threadsRepository
+      .findAll(20, 0, {
+        relations: ['author', 'comments'],
+        order: { createdAt: 'DESC' }
+      });
     return { threads };
   }
 }

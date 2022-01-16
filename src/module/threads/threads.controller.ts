@@ -9,5 +9,6 @@ export class ThreadsController {
   @Render('threads/index')
   async index() {
     const threads = await this.threadsRepository.findAll(20);
+    return { threads };
   }
 }

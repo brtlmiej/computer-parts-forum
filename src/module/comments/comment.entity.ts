@@ -13,10 +13,10 @@ export class Comment {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column('date')
+  @Column('date', { nullable: true })
   deletedAt: Date;
 
-  @Column({ type: 'text', charset: 'utf8_unicode_ci' })
+  @Column({ type: 'text' })
   content: string;
 
   @Column('int')

@@ -21,13 +21,13 @@ export class Thread {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column('date')
+  @Column('date', { nullable: true })
   deletedAt: Date;
 
-  @Column({ charset: 'utf8mb4_unicode_ci' })
+  @Column()
   title: string;
 
-  @Column({ type: 'longtext', charset: 'utf8mb4_unicode_ci' })
+  @Column({ type: 'longtext' })
   description: string;
 
   @ManyToOne(() => User, (obj) => obj.threads)

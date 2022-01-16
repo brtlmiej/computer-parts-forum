@@ -5,7 +5,7 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ charset: 'utf8mb4_unicode_ci'})
+  @Column()
   name: string;
 
   @Column()
@@ -17,6 +17,6 @@ export class Product {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column('date')
+  @Column('date', { nullable: true })
   deletedAt: Date;
 }

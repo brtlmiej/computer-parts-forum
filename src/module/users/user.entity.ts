@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm/index';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm/index';
+import { Thread } from '../threads/thread.entity';
+import { Comment } from '../comments/comment.entity';
 
 @Entity()
 export class User {
@@ -25,4 +27,10 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Thread, (obj) => obj.author)
+  threads: Promise<Thread[]>;
+
+  @OneToMany(() => Comment, (obj) => obj.author)
+  comments: Promise<Comment[]>;
 }

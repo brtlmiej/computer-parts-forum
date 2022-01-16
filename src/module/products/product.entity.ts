@@ -16,4 +16,7 @@ export class Product {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column('date')
+  deletedAt: Date;
 }

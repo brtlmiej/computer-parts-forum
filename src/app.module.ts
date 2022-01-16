@@ -8,6 +8,8 @@ import { UsersModule } from './module/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { ProductsModule } from './module/products/products.module';
 import { ProductsRepository } from './module/products/products.repository';
+import { ThreadsModule } from './module/threads/threads.module';
+import { CommentsModule } from './module/comments/comments.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { ProductsRepository } from './module/products/products.repository';
     TypeOrmModule.forFeature([ProductsRepository]),
     AuthModule,
     UsersModule,
-    ProductsModule
+    ProductsModule,
+    ThreadsModule,
+    CommentsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,24 +1,15 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm/index';
 
 @Entity()
-export class User {
+export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255, unique: true })
-  email: string;
+  @Column({ charset: 'utf8mb4_unicode_ci'})
+  name: string;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column()
-  password: string;
-
-  @Column({ type: 'int' })
-  status: number;
+  photo: string;
 
   @CreateDateColumn()
   createdAt: Date;

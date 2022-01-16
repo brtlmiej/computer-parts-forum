@@ -5,7 +5,7 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ charset: 'utf8mb4_unicode_ci'})
   name: string;
 
   @Column()

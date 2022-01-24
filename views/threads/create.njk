@@ -1,0 +1,19 @@
+{% extends './../components/layout.njk' %}
+{% block body %}
+    <div class="container-fluid mt-100">
+        <div style="width: 70%; margin-left: 15%; margin-right: 15%; margin-top: 200px;">
+            <h1 class="mb-5">Add new thread</h1>
+        <form action="{{ route('/threads') }}" method="post">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+    </div>
+{% endblock %}

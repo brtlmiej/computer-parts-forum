@@ -19,7 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   private handleWebRequestExceptions(response: Response, request: Request, status: number) {
     switch (status) {
       case 404:
-        response.redirect(process.env.APP_URL + '/404');
+        response.render('404');
         break;
     }
   }

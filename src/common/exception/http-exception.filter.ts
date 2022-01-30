@@ -21,6 +21,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       case 404:
         response.render('404');
         break;
+      case 403:
+      case 401:
+        response.redirect('/auth/login')
+        break;
     }
   }
 

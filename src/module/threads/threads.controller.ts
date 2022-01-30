@@ -1,9 +1,21 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Redirect, Render, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Redirect,
+  Render,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ThreadsRepository } from './threads.repository';
 import { ThreadDto } from './dto/thread.dto';
 import { Thread } from './thread.entity';
 import { CommentsRepository } from '../comments/comments.repository';
 import { Response } from 'express';
+import { AuthenticatedGuard } from '../auth/guard/authenticated.guard';
 
 @Controller('threads')
 export class ThreadsController {
@@ -23,6 +35,13 @@ export class ThreadsController {
     return { threads };
   }
 
+  @UseGuards(AuthenticatedGuard)
+  @Get('/create')
+  @Render('threads/create')
+  async create() {
+    return {};
+  }
+
   @Get('/:id')
   @Render('threads/show')
   async show(@Param('id') id: number) {
@@ -31,12 +50,6 @@ export class ThreadsController {
       throw new NotFoundException()
     }
     return { thread };
-  }
-
-  @Get('create')
-  @Render('threads/create')
-  async create() {
-    return {};
   }
 
   @Post()
@@ -74,7 +87,7 @@ export class ThreadsController {
     await response.redirect('/threads/' + thread.id + '/edit')
   }
 
-  @Post(':id/delete')
+  @Post('/:id/delete')
   @Redirect('/')
   async delete(
     @Param('id') id: number,

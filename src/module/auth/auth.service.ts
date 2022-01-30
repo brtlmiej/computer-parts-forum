@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from '../users/users.repository';
 import * as bcrypt from 'bcrypt';
 import { UserStatus } from '../users/enum/user-status.enum';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,5 +15,24 @@ export class AuthService {
       return result;
     }
     return null;
+  }
+
+  async register(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ) {
+    let user = await this.usersRepository.findOne({ email: email });
+    if (user) {
+      throw new BadRequestException();
+    }
+    user = new User();
+    user.email = email;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.status = 1;
+    user.password = bcrypt.hashSync(password, 12);
+    return await this.usersRepository.save(user);
   }
 }

@@ -25,12 +25,12 @@ async function bootstrap() {
       secret: 'nest cats',
       resave: false,
       saveUninitialized: false,
+      cookie: { maxAge: 3600000 },
     }),
   );
 
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(flash());
   app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(3000);

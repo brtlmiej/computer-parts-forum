@@ -11,6 +11,15 @@ import { CsrfTokenInterceptor } from './module/auth/interceptor/csrf-token.inter
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 3600000 },
+    }),
+  );
+
   const express = app.getHttpAdapter().getInstance();
   const njkEnv = nunjucks.configure(
     join(__dirname, '..', 'views'),
@@ -21,14 +30,6 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('njk');
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: { maxAge: 3600000 },
-    }),
-  );
 
   app.use(passport.initialize());
   app.use(passport.session());

@@ -42,7 +42,8 @@
     "req-flash": "0.0.3",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "xss": "^1.0.10"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

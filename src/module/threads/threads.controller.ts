@@ -57,9 +57,10 @@ export class ThreadsController {
   @UseGuards(AuthenticatedGuard)
   @Post()
   async store(@Body() body: ThreadDto, @Res() res: Response) {
+    const xss = require("xss");
     const thread = new Thread();
-    thread.title = body.title;
-    thread.description = body.description;
+    thread.title =  xss(body.title);
+    thread.description = xss(body.description);
     await this.threadsRepository.save(thread);
     res.redirect('/threads/' + thread.id + '/edit');
   }
@@ -90,8 +91,9 @@ export class ThreadsController {
     if (!thread || (await thread.author).id != user.id) {
       throw new NotFoundException()
     }
-    thread.title = body.title;
-    thread.description = body.description;
+    const xss = require("xss");
+    thread.title = xss(body.title);
+    thread.description = xss(body.description);
     await this.threadsRepository.save(thread);
     await response.redirect('/threads/' + thread.id + '/edit')
   }

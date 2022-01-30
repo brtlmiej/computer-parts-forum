@@ -16,6 +16,8 @@ import { Thread } from './thread.entity';
 import { CommentsRepository } from '../comments/comments.repository';
 import { Response } from 'express';
 import { AuthenticatedGuard } from '../auth/guard/authenticated.guard';
+import { CurrentUser } from '../auth/decorator/current-user.decorator';
+import { User } from '../users/user.entity';
 
 @Controller('threads')
 export class ThreadsController {
@@ -52,33 +54,40 @@ export class ThreadsController {
     return { thread };
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post()
-  @Redirect('/threads')
-  async store(@Body() body: ThreadDto) {
+  async store(@Body() body: ThreadDto, @Res() res: Response) {
     const thread = new Thread();
     thread.title = body.title;
     thread.description = body.description;
     await this.threadsRepository.save(thread);
+    res.redirect('/threads/' + thread.id + '/edit');
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Get('/:id/edit')
   @Render('threads/edit')
-  async edit(@Param('id') id: number) {
+  async edit(
+    @Param('id') id: number,
+    @CurrentUser() user: User,
+  ) {
     const thread = await this.threadsRepository.findOne(id);
-    if (!thread) {
+    if (!thread || (await thread.author).id != user.id) {
       throw new NotFoundException()
     }
     return { thread };
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post('/:id')
   async update(
     @Param('id') id: number,
     @Body() body: ThreadDto,
     @Res() response: Response,
+    @CurrentUser() user: User,
   ) {
     const thread = await this.threadsRepository.findOne(id);
-    if (!thread) {
+    if (!thread || (await thread.author).id != user.id) {
       throw new NotFoundException()
     }
     thread.title = body.title;
@@ -87,13 +96,15 @@ export class ThreadsController {
     await response.redirect('/threads/' + thread.id + '/edit')
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post('/:id/delete')
   @Redirect('/')
   async delete(
     @Param('id') id: number,
+    @CurrentUser() user: User,
   ) {
     const thread = await this.threadsRepository.findOne(id);
-    if (!thread) {
+    if (!thread || (await thread.author).id != user.id) {
       throw new NotFoundException()
     }
     const comments = await thread.comments;

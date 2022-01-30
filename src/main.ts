@@ -7,6 +7,7 @@ import * as session from 'express-session';
 import flash = require('req-flash');
 import * as passport from 'passport';
 import { HttpExceptionFilter } from './common/exception/http-exception.filter';
+import { CsrfTokenInterceptor } from './module/auth/interceptor/csrf-token.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,7 +23,7 @@ async function bootstrap() {
   app.setViewEngine('njk');
   app.use(
     session({
-      secret: 'nest cats',
+      secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: { maxAge: 3600000 },
@@ -32,6 +33,7 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new CsrfTokenInterceptor());
 
   await app.listen(3000);
 }
